@@ -1,0 +1,15 @@
+name: study-planner-env
+entrypoint: inference.py
+environment:
+  module: study_env.env
+  class: StudyPlannerEnv
+tasks:
+  - easy
+  - medium
+  - hard
+agent:
+  module: inference
+  class: DeterministicPlannerAgent
+grader:
+  module: grader
+  function: grade

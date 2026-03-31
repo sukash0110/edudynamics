@@ -1,3 +1,2 @@
-altair
-pandas
-streamlit
+pyyaml>=6.0,<7.0
+streamlit>=1.43,<2.0
