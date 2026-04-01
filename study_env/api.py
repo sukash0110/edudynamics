@@ -43,7 +43,7 @@ class EnvironmentSession:
             return None if self._env is None else self._env.task_name
 
 
-app = FastAPI(title="Student Study Planner Env", version="1.0.0")
+app = FastAPI(title="EduDynamics", version="1.0.0")
 session = EnvironmentSession()
 
 
@@ -51,7 +51,7 @@ session = EnvironmentSession()
 def root():
     return HealthResponse(
         status="ok",
-        name="student-study-planner-env",
+        name="edudynamics",
         available_tasks=list(TASKS.keys()),
         current_task=session.current_task(),
     )
@@ -88,7 +88,7 @@ def state():
 def spec():
     return JSONResponse(
         {
-            "name": "student-study-planner-env",
+            "name": "edudynamics",
             "required_env": ["API_BASE_URL", "MODEL_NAME", "HF_TOKEN"],
             "actions": session.state()["action_meanings"],
             "tasks": list(TASKS.keys()),

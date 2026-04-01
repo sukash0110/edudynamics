@@ -1,5 +1,5 @@
 ---
-title: Student Study Planner
+title: EduDynamics
 emoji: 📚
 colorFrom: blue
 colorTo: green
@@ -10,7 +10,9 @@ license: mit
 short_description: Streamlit study planner with energy-aware optimization.
 ---
 
-# Student Study Planner with Energy, Balance, and Performance Optimization
+# EduDynamics
+
+Student Study Planner with energy, balance, and performance optimization.
 
 An OpenEnv-style reinforcement learning environment where an agent must plan study actions across math, physics, and chemistry while managing fatigue, subject imbalance, and long-horizon performance.
 
@@ -31,11 +33,11 @@ This repo is structured to satisfy the common first-round validator checks:
 
 ### Dashboard Screenshot
 
-![Student Study Planner dashboard](assets/dashboard-preview.svg)
+![EduDynamics dashboard](assets/dashboard-preview.svg)
 
 ### Walkthrough GIF
 
-![Student Study Planner walkthrough](assets/planner-walkthrough.svg)
+![EduDynamics walkthrough](assets/planner-walkthrough.svg)
 
 ## Why This Environment Matters
 

@@ -2,7 +2,7 @@
 <rect width="1600" height="1000" rx="36" fill="#EEF4FF"/>
 <rect x="36" y="36" width="1528" height="928" rx="36" fill="#F4F8FF" stroke="#D9E4F5" stroke-width="2"/>
 <rect x="66" y="62" width="1468" height="156" rx="30" fill="white" stroke="#D8E3F4" stroke-width="2"/>
-<text x="96" y="98" fill="#0F766E" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700">STUDENT STUDY PLANNER</text>
+<text x="96" y="98" fill="#0F766E" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700">EDUDYNAMICS</text>
 <text x="96" y="145" fill="#0F172A" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="800">Energy-aware study optimization dashboard</text>
 <text x="96" y="187" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="20">Deterministic baseline on the medium task balancing math, physics, chemistry, reward quality, and fatigue.</text>
 

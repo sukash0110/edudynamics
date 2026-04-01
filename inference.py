@@ -104,7 +104,7 @@ def print_summary(summary):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Run the student study planner baseline agent.")
+    parser = argparse.ArgumentParser(description="Run the EduDynamics baseline agent.")
     parser.add_argument(
         "--stochastic",
         action="store_true",

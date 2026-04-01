@@ -1,4 +1,4 @@
-name: study-planner-env
+name: edudynamics
 entrypoint: inference.py
 api:
   module: study_env.api

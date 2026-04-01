@@ -287,7 +287,7 @@ def render_trace(summary):
 
 
 def main():
-    st.set_page_config(page_title="Student Study Planner", page_icon="📚", layout="wide")
+    st.set_page_config(page_title="EduDynamics", page_icon="📚", layout="wide")
     inject_styles()
     render_hero()
 
