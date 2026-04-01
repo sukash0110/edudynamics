@@ -38,7 +38,7 @@ def validate_openenv_yaml():
 def validate_inference():
     start = time.time()
     completed = subprocess.run(
-        [sys.executable, "inference.py"],
+        [sys.executable, "inference.py", "--agent", "heuristic"],
         cwd=ROOT,
         capture_output=True,
         text=True,

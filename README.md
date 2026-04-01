@@ -27,6 +27,7 @@ This repo is structured to satisfy the common first-round validator checks:
 - Dockerfile build path for automated repo validation
 - pre-submission validation script via `python validate_submission.py`
 - environment variable placeholders for `API_BASE_URL`, `MODEL_NAME`, and `HF_TOKEN`
+- OpenAI baseline support through `OPENAI_API_KEY`
 - OpenEnv packaging pieces including `pyproject.toml`, `uv.lock`, and `server/app.py`
 
 ## Preview
@@ -104,7 +105,12 @@ This encourages policies that make consistent progress without collapsing into o
 
 ## Baseline Agent
 
-The included baseline policy is deterministic by default and adapts to:
+The project includes two baseline modes:
+
+- `openai`: uses the official OpenAI Python client and reads `OPENAI_API_KEY`
+- `heuristic`: deterministic offline fallback for local validation and no-network runs
+
+The deterministic fallback policy adapts to:
 
 - current energy level
 - weakest subject
@@ -116,6 +122,8 @@ Behavior summary:
 - revises the weakest subject when imbalance becomes large
 - studies the weakest subject when mastery is still behind
 - stays reproducible for grading
+
+The OpenAI baseline runs with temperature `0` so the action policy remains reproducible for a fixed model and prompt.
 
 ## Grading Strategy
 
@@ -153,6 +161,13 @@ CLI baseline:
 
 ```bash
 python inference.py
+```
+
+OpenAI baseline:
+
+```bash
+set OPENAI_API_KEY=your_key
+python inference.py --agent openai
 ```
 
 Seeded stochastic run:
@@ -214,6 +229,7 @@ The project includes `.env.example` with the required names:
 
 - `API_BASE_URL`
 - `MODEL_NAME`
+- `OPENAI_API_KEY`
 - `HF_TOKEN`
 
 These are available as environment placeholders in the Docker image and can be overridden in your deployment configuration.

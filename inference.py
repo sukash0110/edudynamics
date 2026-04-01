@@ -1,5 +1,9 @@
 import argparse
+import json
+import os
 import random
+
+from openai import OpenAI
 
 from study_env import StudyPlannerEnv
 from study_env.tasks import TASKS
@@ -42,9 +46,65 @@ class DeterministicPlannerAgent:
         return action
 
 
-def run_episode(task_name, stochastic=False, seed=123):
+class OpenAIBaselineAgent:
+    def __init__(self, model_name=None, api_key=None, api_base_url=None):
+        self.model_name = model_name or os.getenv("MODEL_NAME", "gpt-4.1-mini")
+        self.api_key = api_key or os.getenv("OPENAI_API_KEY")
+        self.api_base_url = api_base_url or os.getenv("API_BASE_URL")
+        if not self.api_key:
+            raise ValueError("OPENAI_API_KEY is required for OpenAIBaselineAgent.")
+        client_kwargs = {"api_key": self.api_key}
+        if self.api_base_url:
+            client_kwargs["base_url"] = self.api_base_url
+        self.client = OpenAI(**client_kwargs)
+
+    def _build_prompt(self, observation):
+        action_meanings = observation["action_meanings"]
+        return (
+            "You are choosing the next action in EduDynamics, a student study planning environment.\n"
+            "Pick exactly one action id that best improves long-term performance while preserving balance and energy.\n"
+            "Return strict JSON with keys action and rationale.\n\n"
+            f"Observation:\n{json.dumps(observation, indent=2)}\n\n"
+            f"Available actions:\n{json.dumps(action_meanings, indent=2)}\n"
+        )
+
+    def act(self, observation):
+        response = self.client.responses.create(
+            model=self.model_name,
+            temperature=0,
+            input=[
+                {
+                    "role": "system",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": (
+                                "You are a deterministic planning agent. "
+                                "Always return valid JSON with an integer action from 0 to 6."
+                            ),
+                        }
+                    ],
+                },
+                {
+                    "role": "user",
+                    "content": [{"type": "text", "text": self._build_prompt(observation)}],
+                },
+            ],
+        )
+        text = response.output_text.strip()
+        payload = json.loads(text)
+        action = int(payload["action"])
+        if action < 0 or action > 6:
+            raise ValueError(f"Model returned invalid action: {action}")
+        return action
+
+
+def run_episode(task_name, stochastic=False, seed=123, agent_mode="heuristic"):
     env = StudyPlannerEnv(task_name=task_name, stochastic=stochastic, seed=seed)
-    agent = DeterministicPlannerAgent(stochastic_tie_break=stochastic, seed=seed)
+    if agent_mode == "openai":
+        agent = OpenAIBaselineAgent()
+    else:
+        agent = DeterministicPlannerAgent(stochastic_tie_break=stochastic, seed=seed)
     observation = env.reset()
     total_reward = 0.0
     steps = 0
@@ -72,6 +132,7 @@ def run_episode(task_name, stochastic=False, seed=123):
         "task": task_name,
         "stochastic": stochastic,
         "seed": seed,
+        "agent_mode": agent_mode,
         "steps": steps,
         "total_reward": round(total_reward, 4),
         "final_state": observation,
@@ -85,6 +146,7 @@ def run_episode(task_name, stochastic=False, seed=123):
 def print_summary(summary):
     episode = summary["episode_summary"]
     print(f"Task: {summary['task']}")
+    print(f"Agent: {summary['agent_mode']}")
     print(f"Mode: {'stochastic' if summary['stochastic'] else 'deterministic'}")
     if summary["stochastic"]:
         print(f"Seed: {summary['seed']}")
@@ -121,13 +183,23 @@ def main():
         action="store_true",
         help="Enable stochastic mode with a different random seed on every run.",
     )
+    parser.add_argument(
+        "--agent",
+        choices=["auto", "openai", "heuristic"],
+        default="auto",
+        help="Agent backend for inference. 'auto' uses OpenAI when OPENAI_API_KEY is set, else heuristic.",
+    )
     args = parser.parse_args()
 
     stochastic = args.stochastic or args.randomize
     seed = random.SystemRandom().randint(0, 10**9) if args.randomize else args.seed
+    if args.agent == "auto":
+        agent_mode = "openai" if os.getenv("OPENAI_API_KEY") else "heuristic"
+    else:
+        agent_mode = args.agent
 
     for task_name in TASKS:
-        summary = run_episode(task_name, stochastic=stochastic, seed=seed)
+        summary = run_episode(task_name, stochastic=stochastic, seed=seed, agent_mode=agent_mode)
         print_summary(summary)
         print("-" * 60)
 

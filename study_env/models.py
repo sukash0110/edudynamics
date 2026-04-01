@@ -21,6 +21,16 @@ class StepRequest(BaseModel):
     action: int = Field(ge=0, le=6)
 
 
+class ActionModel(BaseModel):
+    action: int = Field(ge=0, le=6)
+    rationale: Optional[str] = None
+
+
+class RewardModel(BaseModel):
+    value: float
+    components: Dict[str, float] = Field(default_factory=dict)
+
+
 class StateModel(BaseModel):
     task: str
     day: int

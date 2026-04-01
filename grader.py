@@ -50,7 +50,7 @@ def grade():
     passed_tasks = 0
 
     for task_name in TASKS:
-        summary = run_episode(task_name, stochastic=False, seed=123)
+        summary = run_episode(task_name, stochastic=False, seed=123, agent_mode="heuristic")
         evaluation = evaluate_task(task_name, summary)
         task_results[task_name] = evaluation
         aggregate_score += evaluation["score"]
