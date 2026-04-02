@@ -1,3 +1,6 @@
+import base64
+from pathlib import Path
+
 import streamlit as st
 
 from inference import run_episode
@@ -132,10 +135,23 @@ def build_trace_rows(trace):
     return rows
 
 
+def render_logo(width_px):
+    svg_text = Path(LOGO_PATH).read_text(encoding="utf-8")
+    encoded = base64.b64encode(svg_text.encode("utf-8")).decode("utf-8")
+    st.markdown(
+        f"""
+        <div style="display:flex; justify-content:center;">
+            <img src="data:image/svg+xml;base64,{encoded}" width="{width_px}" alt="EduDynamics logo" />
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def render_hero():
     logo_col, copy_col = st.columns([0.95, 3.05], vertical_alignment="center")
     with logo_col:
-        st.image(LOGO_PATH, use_container_width=True)
+        render_logo(260)
     with copy_col:
         st.markdown(
             """
@@ -298,7 +314,7 @@ def main():
     render_hero()
 
     with st.sidebar:
-        st.image(LOGO_PATH, width=132)
+        render_logo(132)
         st.markdown("### EduDynamics")
         st.caption("Energy-aware student planning simulator")
         st.markdown("---")
