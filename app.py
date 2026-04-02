@@ -4,6 +4,8 @@ from inference import run_episode
 from study_env.tasks import TASKS
 
 
+LOGO_PATH = "assets/edudynamics-logo.svg"
+
 SUBJECT_COLORS = {
     "math": "#0f766e",
     "physics": "#1d4ed8",
@@ -131,19 +133,23 @@ def build_trace_rows(trace):
 
 
 def render_hero():
-    st.markdown(
-        """
-        <div class="hero">
-            <div class="hero-kicker">Student Planning Environment</div>
-            <div class="hero-title">Build sustainable study momentum across math, physics, and chemistry.</div>
-            <div class="hero-copy">
-                This dashboard simulates a student balancing performance, energy, and subject coverage over multiple days.
-                Run deterministic baselines for reproducible evaluation, or switch to stochastic modes to explore varied trajectories.
+    logo_col, copy_col = st.columns([0.95, 3.05], vertical_alignment="center")
+    with logo_col:
+        st.image(LOGO_PATH, use_container_width=True)
+    with copy_col:
+        st.markdown(
+            """
+            <div class="hero">
+                <div class="hero-kicker">EduDynamics</div>
+                <div class="hero-title">Build sustainable study momentum across math, physics, and chemistry.</div>
+                <div class="hero-copy">
+                    This dashboard simulates a student balancing performance, energy, and subject coverage over multiple days.
+                    Run deterministic baselines for reproducible evaluation, or switch to stochastic modes to explore varied trajectories.
+                </div>
             </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+            """,
+            unsafe_allow_html=True,
+        )
 
 
 def render_metric_panels(summary):
@@ -246,7 +252,7 @@ def render_trace(summary):
     chart_cols = st.columns(2)
     with chart_cols[0]:
         st.markdown("**Energy trajectory**")
-        st.line_chart([{ "step": row["step"], "energy": row["energy"] } for row in rows], x="step", y="energy")
+        st.line_chart([{"step": row["step"], "energy": row["energy"]} for row in rows], x="step", y="energy")
     with chart_cols[1]:
         st.markdown("**Mastery trajectory**")
         st.line_chart(
@@ -292,6 +298,10 @@ def main():
     render_hero()
 
     with st.sidebar:
+        st.image(LOGO_PATH, width=132)
+        st.markdown("### EduDynamics")
+        st.caption("Energy-aware student planning simulator")
+        st.markdown("---")
         st.markdown("## Simulation Controls")
         st.caption("Configure the planner, then run a full episode.")
         task_name = st.selectbox("Task difficulty", options=list(TASKS.keys()), index=1)

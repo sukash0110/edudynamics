@@ -14,6 +14,8 @@ short_description: Streamlit study planner with energy-aware optimization.
 
 Student Study Planner with energy, balance, and performance optimization.
 
+![EduDynamics logo](assets/edudynamics-logo.svg)
+
 An OpenEnv-style reinforcement learning environment where an agent must plan study actions across math, physics, and chemistry while managing fatigue, subject imbalance, and long-horizon performance.
 
 ## Submission Checklist Alignment
