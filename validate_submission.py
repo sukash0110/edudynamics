@@ -73,7 +73,7 @@ def validate_server():
         deadline = time.time() + 20
         while time.time() < deadline:
             try:
-                status, payload = http_json("GET", "http://127.0.0.1:8510/")
+                status, payload = http_json("GET", "http://127.0.0.1:8510/health")
                 if status == 200 and payload["status"] == "ok":
                     break
             except URLError:

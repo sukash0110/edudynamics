@@ -214,7 +214,11 @@ Live Space:
 
 [https://huggingface.co/spaces/sukash0110/study_planner_env](https://huggingface.co/spaces/sukash0110/study_planner_env)
 
-This repo is configured as a Docker-based Hugging Face Space and serves the OpenEnv-compatible API on port `8501`.
+This repo is configured as a Docker-based Hugging Face Space and serves a hybrid deployment on port `8501`:
+
+- `/` shows a branded landing page with the embedded Streamlit demo
+- `/ui` serves the full Streamlit application
+- API endpoints remain available for validator-style checks
 
 For validator-style API checks, the deployment also exposes:
 
