@@ -101,7 +101,7 @@ def landing_page(_request):
               <div class="actions">
                 <a class="button primary" href="/ui" target="_blank">Open Full UI</a>
                 <a class="button" href="/api/docs" target="_blank">API Docs</a>
-                <a class="button" href="/health" target="_blank">Health</a>
+                <a class="button" href="/health" target="_blank">Validation UI</a>
               </div>
             </div>
             <div class="frame-wrap">
