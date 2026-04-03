@@ -95,7 +95,7 @@ def landing_page(_request):
                 <img src="/logo" alt="EduDynamics logo" />
                 <div>
                   <div class="brand-title">EduDynamics</div>
-                  <div class="brand-copy">Streamlit demo plus OpenEnv-compatible API in one Space</div>
+                  <div class="brand-copy">Where smarter study plans meet live simulation and evaluator-ready AI tooling.</div>
                 </div>
               </div>
               <div class="actions">
