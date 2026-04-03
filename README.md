@@ -7,7 +7,7 @@ sdk: docker
 app_port: 8501
 pinned: false
 license: mit
-short_description: EduDynamics 1.0.1 with manual simulation, richer analytics, and OpenEnv-ready evaluation.
+short_description: EduDynamics 1.0.1 with analytics and OpenEnv API.
 ---
 
 # EduDynamics 1.0.1
