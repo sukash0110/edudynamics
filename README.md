@@ -1,5 +1,5 @@
 ---
-title: EduDynamics 1.1.0
+title: EduDynamics 1.1.1
 emoji: 📚
 colorFrom: blue
 colorTo: green
@@ -7,10 +7,10 @@ sdk: docker
 app_port: 8501
 pinned: false
 license: mit
-short_description: EduDynamics 1.1.0 with bug fixes and learning dynamics.
+short_description: EduDynamics 1.1.1 with reward reviews and learning dynamics.
 ---
 
-# EduDynamics 1.1.0
+# EduDynamics 1.1.1
 
 EduDynamics is a real-world OpenEnv reinforcement learning environment for student study planning across math, physics, and chemistry under energy, balance, and long-horizon retention constraints.
 
@@ -28,7 +28,7 @@ Live links:
 - GitHub: [sukash0110/study_planner_env](https://github.com/sukash0110/study_planner_env)
 - Hugging Face Space: [EduDynamics](https://huggingface.co/spaces/sukash0110/study_planner_env)
 
-Version `1.1.0` focuses on major bug fixes, cleaner organization, and a more stable `AuraUI 1.1.0` interface layer on top of the realistic learning model with retention risk, memory strength, spacing, and recovery-aware planning.
+Version `1.1.1` adds reward-based run reviews, color-coded badges, and a more consistent `AuraUI 1.1.1` release layer on top of the realistic learning model with retention risk, memory strength, spacing, and recovery-aware planning.
 
 Release history:
 
@@ -271,7 +271,7 @@ Live Space:
 
 [https://huggingface.co/spaces/sukash0110/study_planner_env](https://huggingface.co/spaces/sukash0110/study_planner_env)
 
-This repo is configured as a Docker-based Hugging Face Space and serves the `1.1.0` hybrid deployment on port `8501`:
+This repo is configured as a Docker-based Hugging Face Space and serves the `1.1.1` hybrid deployment on port `8501`:
 
 - `/` shows a branded landing page with the embedded Streamlit demo
 - `/ui` serves the full Streamlit application natively

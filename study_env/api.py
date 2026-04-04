@@ -43,7 +43,7 @@ class EnvironmentSession:
 
 
 session = EnvironmentSession()
-app = FastAPI(title="EduDynamics API", version="1.1.0")
+app = FastAPI(title="EduDynamics API", version="1.1.1")
 
 
 @app.get("/", response_model=HealthResponse)
