@@ -95,7 +95,7 @@ def landing_page(_request):
                 <img src="/logo" alt="EduDynamics logo" />
                 <div>
                   <div class="brand-title">EduDynamics</div>
-                  <div class="brand-copy">Running on AuraUI 1.1.0 with stability improvements, liquid-glass simulation, and retention-aware learning dynamics.</div>
+                  <div class="brand-copy">Running on AuraUI 1.1.1 with per-run reward reviews, liquid-glass simulation, and retention-aware learning dynamics.</div>
                 </div>
               </div>
               <div class="actions">
@@ -105,7 +105,7 @@ def landing_page(_request):
               </div>
             </div>
             <div class="frame-wrap">
-              <iframe src="/ui" title="EduDynamics on AuraUI 1.1.0"></iframe>
+              <iframe src="/ui" title="EduDynamics on AuraUI 1.1.1"></iframe>
             </div>
           </body>
         </html>

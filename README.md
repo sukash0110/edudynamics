@@ -155,13 +155,19 @@ Behavior summary:
 
 The OpenAI baseline runs with temperature `0` so the action policy remains reproducible for a fixed model and prompt.
 
+## What's New In 1.1.1
+
+- every simulation run now gets a reward-based review in the UI with actionable feedback
+- recent runs are stored in-session so you can compare how reward quality changes across reruns
+- landing page branding and package metadata now match the new `AuraUI 1.1.1` release
+
 ## What's New In 1.1.0
 
 - appearance mode is now explicit and persistent inside the UI instead of relying on flaky browser/theme detection
 - expensive reruns are cached so switching tabs and compare views feels much smoother
 - shared version and branding labels are centralized to reduce UI drift and copy mismatches
 - light-mode chrome, controls, and info panels were cleaned up for better readability
-- hybrid UI/API branding was tightened so `EduDynamics` remains the app name while `AuraUI 1.1.0` stays the interface layer
+- hybrid UI/API branding was tightened so `EduDynamics` remains the app name while `AuraUI 1.1.x` stays the interface layer
 - the real-learning model with spacing, forgetting, consolidation, and cognitive load remains intact
 
 ## Grading Strategy
