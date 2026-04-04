@@ -12,13 +12,23 @@ short_description: EduDynamics 1.1.0 with bug fixes and learning dynamics.
 
 # EduDynamics 1.1.0
 
-Student Study Planner with energy, balance, performance optimization, a liquid-glass analytics workspace, and more realistic learning dynamics.
+EduDynamics is a real-world OpenEnv reinforcement learning environment for student study planning across math, physics, and chemistry under energy, balance, and long-horizon retention constraints.
 
 ![EduDynamics logo](ui/assets/edudynamics-logo.svg)
 
-An OpenEnv-style reinforcement learning environment where an agent must plan study actions across math, physics, and chemistry while managing fatigue, subject imbalance, and long-horizon performance.
+This submission includes:
 
-Version `1.1.0` focuses on major bug fixes and quality improvements while keeping the `AuraUI 1.1.0` interface layer, the hybrid deployment, and the more realistic learning model with retention risk, memory strength, spacing, and recovery-aware planning.
+- a validator-ready OpenEnv environment with `reset()`, `step()`, and `state()`
+- three tasks (`easy`, `medium`, `hard`) with deterministic grading in the `0.0` to `1.0` range
+- a root `inference.py`, Docker/Hugging Face deployment path, and public demo
+- shaped rewards covering performance, subject balance, energy efficiency, spacing, retention, and recovery
+
+Live links:
+
+- GitHub: [sukash0110/study_planner_env](https://github.com/sukash0110/study_planner_env)
+- Hugging Face Space: [EduDynamics](https://huggingface.co/spaces/sukash0110/study_planner_env)
+
+Version `1.1.0` focuses on major bug fixes, cleaner organization, and a more stable `AuraUI 1.1.0` interface layer on top of the realistic learning model with retention risk, memory strength, spacing, and recovery-aware planning.
 
 Release history:
 
