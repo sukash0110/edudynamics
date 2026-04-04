@@ -12,7 +12,7 @@ APP_NAME = "EduDynamics"
 APP_VERSION = "1.1.0"
 UI_LAYER_NAME = "AuraUI"
 UI_LAYER_VERSION = "1.1.0"
-LOGO_PATH = str(Path(__file__).resolve().parents[1] / "assets" / "edudynamics-logo.svg")
+LOGO_PATH = str(Path(__file__).resolve().parent / "assets" / "edudynamics-logo.svg")
 SUBJECT_COLORS = {
     "math": "#64d2ff",
     "physics": "#7d7aff",

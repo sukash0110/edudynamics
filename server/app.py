@@ -114,7 +114,8 @@ def landing_page(_request):
 
 
 def logo(_request):
-    return FileResponse("assets/edudynamics-logo.svg", media_type="image/svg+xml")
+    logo_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "ui", "assets", "edudynamics-logo.svg")
+    return FileResponse(logo_path, media_type="image/svg+xml")
 
 
 def health(_request):

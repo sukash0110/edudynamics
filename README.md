@@ -14,7 +14,7 @@ short_description: EduDynamics 1.1.0 with bug fixes and learning dynamics.
 
 Student Study Planner with energy, balance, performance optimization, a liquid-glass analytics workspace, and more realistic learning dynamics.
 
-![EduDynamics logo](assets/edudynamics-logo.svg)
+![EduDynamics logo](ui/assets/edudynamics-logo.svg)
 
 An OpenEnv-style reinforcement learning environment where an agent must plan study actions across math, physics, and chemistry while managing fatigue, subject imbalance, and long-horizon performance.
 
@@ -22,7 +22,7 @@ Version `1.1.0` focuses on major bug fixes and quality improvements while keepin
 
 Release history:
 
-- see [CHANGELOG.md](CHANGELOG.md) for the version-by-version update log from `1.0.0` onward
+- see [CHANGELOG.md](docs/CHANGELOG.md) for the version-by-version update log from `1.0.0` onward
 
 ## Submission Checklist Alignment
 
@@ -54,11 +54,11 @@ The repository is organized so the hackathon-required root entry points still ex
 
 ### Dashboard Screenshot
 
-![EduDynamics dashboard](assets/dashboard-preview.svg)
+![EduDynamics dashboard](ui/assets/dashboard-preview.svg)
 
 ### Walkthrough GIF
 
-![EduDynamics walkthrough](assets/planner-walkthrough.svg)
+![EduDynamics walkthrough](ui/assets/planner-walkthrough.svg)
 
 ## Why This Environment Matters
 
@@ -171,28 +171,28 @@ This makes the benchmark easier to interpret in a hackathon review setting.
 
 ```text
 study_planner_env/
-├── assets/
+├── docs/
 ├── evaluation/
 │   ├── __init__.py
 │   └── grader_runner.py
 ├── runtime/
 │   ├── __init__.py
 │   └── inference_runner.py
-├── scripts/
 ├── server/
 ├── study_env/
 ├── tooling/
 │   ├── __init__.py
+│   ├── scripts/
 │   └── validate_submission_runner.py
 ├── ui/
 │   ├── __init__.py
+│   ├── assets/
 │   └── dashboard.py
 ├── app.py
 ├── inference.py
 ├── grader.py
 ├── openenv.yaml
 ├── README.md
-├── CHANGELOG.md
 ├── Dockerfile
 ├── requirements.txt
 └── validate_submission.py

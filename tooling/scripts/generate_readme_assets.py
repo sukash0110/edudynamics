@@ -1,12 +1,12 @@
 from pathlib import Path
 import sys
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from inference import run_episode
 
-ASSETS_DIR = ROOT / "assets"
+ASSETS_DIR = ROOT / "ui" / "assets"
 SCREENSHOT_PATH = ASSETS_DIR / "dashboard-preview.svg"
 ANIMATED_PATH = ASSETS_DIR / "planner-walkthrough.svg"
 
