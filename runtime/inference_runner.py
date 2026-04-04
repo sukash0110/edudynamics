@@ -7,6 +7,11 @@ from openai import OpenAI
 
 from study_env import StudyPlannerEnv
 from study_env.tasks import TASKS
+API_BASE_URL = os.getenv("API_BASE_URL", "https://api.openai.com/v1")
+MODEL_NAME = os.getenv("MODEL_NAME", "gpt-4.1-mini")
+HF_TOKEN = os.getenv("HF_TOKEN", "")
+LOCAL_IMAGE_NAME = os.getenv("LOCAL_IMAGE_NAME", "")
+BENCHMARK_NAME = "edudynamics"
 
 
 class DeterministicPlannerAgent:
@@ -53,11 +58,11 @@ class DeterministicPlannerAgent:
 
 class OpenAIBaselineAgent:
     def __init__(self, model_name=None, api_key=None, api_base_url=None):
-        self.model_name = model_name or os.getenv("MODEL_NAME", "gpt-4.1-mini")
-        self.api_key = api_key or os.getenv("OPENAI_API_KEY")
-        self.api_base_url = api_base_url or os.getenv("API_BASE_URL")
+        self.model_name = model_name or MODEL_NAME
+        self.api_key = api_key or os.getenv("OPENAI_API_KEY") or HF_TOKEN
+        self.api_base_url = api_base_url or API_BASE_URL
         if not self.api_key:
-            raise ValueError("OPENAI_API_KEY is required for OpenAIBaselineAgent.")
+            raise ValueError("HF_TOKEN or OPENAI_API_KEY is required for OpenAIBaselineAgent.")
         client_kwargs = {"api_key": self.api_key}
         if self.api_base_url:
             client_kwargs["base_url"] = self.api_base_url
@@ -154,6 +159,77 @@ def run_episode(task_name, stochastic=False, seed=123, agent_mode="heuristic"):
     return summary
 
 
+def _format_action(action_info):
+    subject = action_info.get("subject")
+    return f"{action_info['type']}:{subject}" if subject else action_info["type"]
+
+
+def log_start(task_name, model_name):
+    print(f"[START] task={task_name} env={BENCHMARK_NAME} model={model_name}", flush=True)
+
+
+def log_step(step, action_str, reward, done, error=None):
+    error_value = error if error else "null"
+    print(
+        f"[STEP] step={step} action={action_str} reward={reward:.2f} done={str(done).lower()} error={error_value}",
+        flush=True,
+    )
+
+
+def log_end(success, steps, rewards):
+    rewards_str = ",".join(f"{reward:.2f}" for reward in rewards)
+    print(f"[END] success={str(success).lower()} steps={steps} rewards={rewards_str}", flush=True)
+
+
+def run_logged_episode(task_name, stochastic=False, seed=123, agent_mode="heuristic"):
+    env = StudyPlannerEnv(task_name=task_name, stochastic=stochastic, seed=seed)
+    if agent_mode == "openai":
+        agent = OpenAIBaselineAgent()
+        model_name = agent.model_name
+    else:
+        agent = DeterministicPlannerAgent(stochastic_tie_break=stochastic, seed=seed)
+        model_name = "heuristic"
+
+    observation = env.reset()
+    rewards = []
+    steps_taken = 0
+    summary = None
+    success = False
+
+    log_start(task_name=task_name, model_name=model_name)
+
+    try:
+        done = False
+        while not done:
+            action = agent.act(observation)
+            observation, reward, done, info = env.step(action)
+            rewards.append(reward)
+            steps_taken += 1
+            log_step(steps_taken, _format_action(info["action"]), reward, done, None)
+
+        summary = {
+            "task": task_name,
+            "stochastic": stochastic,
+            "seed": seed,
+            "agent_mode": agent_mode,
+            "steps": steps_taken,
+            "total_reward": round(sum(rewards), 4),
+            "final_state": observation,
+            "episode_summary": info.get("episode_summary", {}),
+            "trace": [],
+            "trace_tail": [],
+        }
+        from evaluation.grader_runner import evaluate_task
+
+        success = evaluate_task(task_name, summary)["passed"]
+        return summary
+    finally:
+        close_fn = getattr(env, "close", None)
+        if callable(close_fn):
+            close_fn()
+        log_end(success=success, steps=steps_taken, rewards=rewards)
+
+
 def print_summary(summary):
     episode = summary["episode_summary"]
     print(f"Task: {summary['task']}")
@@ -211,9 +287,7 @@ def main():
         agent_mode = args.agent
 
     for task_name in TASKS:
-        summary = run_episode(task_name, stochastic=stochastic, seed=seed, agent_mode=agent_mode)
-        print_summary(summary)
-        print("-" * 60)
+        run_logged_episode(task_name, stochastic=stochastic, seed=seed, agent_mode=agent_mode)
 
 
 if __name__ == "__main__":

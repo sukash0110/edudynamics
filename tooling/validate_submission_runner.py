@@ -47,9 +47,10 @@ def validate_inference():
     )
     duration = time.time() - start
     assert duration < 1200
-    assert "Task: easy" in completed.stdout
-    assert "Task: medium" in completed.stdout
-    assert "Task: hard" in completed.stdout
+    assert "[START] task=easy" in completed.stdout
+    assert "[START] task=medium" in completed.stdout
+    assert "[START] task=hard" in completed.stdout
+    assert "[END] success=" in completed.stdout
 
 
 def validate_grader():
