@@ -25,9 +25,224 @@ ACTION_LABELS = {
 }
 
 
-def inject_styles():
-    st.markdown(
+def inject_styles(appearance="dark"):
+    if appearance == "light":
+        css = """
+        <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.76);
+            --glass-border: rgba(173, 190, 214, 0.5);
+            --glass-shadow: 0 24px 56px rgba(96, 121, 150, 0.18);
+            --text-main: #11233b;
+            --text-soft: rgba(39, 59, 84, 0.82);
+            --text-faint: rgba(82, 104, 132, 0.82);
+            --sidebar-bg: linear-gradient(180deg, rgba(244, 249, 255, 0.92), rgba(227, 237, 252, 0.88));
+            --control-bg: rgba(255, 255, 255, 0.92);
+            --control-border: rgba(122, 146, 173, 0.28);
+            --button-bg: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(233,241,255,0.8));
+            --tab-bg: rgba(255,255,255,0.72);
+            --tab-selected: linear-gradient(135deg, rgba(100,210,255,0.32), rgba(125,122,255,0.22));
+        }
+        .stApp {
+            background:
+                radial-gradient(circle at 14% 18%, rgba(100, 210, 255, 0.34), transparent 22%),
+                radial-gradient(circle at 86% 14%, rgba(125, 122, 255, 0.22), transparent 24%),
+                radial-gradient(circle at 76% 82%, rgba(156, 242, 143, 0.18), transparent 22%),
+                linear-gradient(145deg, #edf4ff 0%, #f5f8ff 36%, #eef7f4 100%);
+            color: var(--text-main);
+        }
+        [data-testid="stHeader"] {
+            background: rgba(248, 251, 255, 0.78) !important;
+            border-bottom: 1px solid rgba(173, 190, 214, 0.22);
+            backdrop-filter: blur(18px);
+        }
+        [data-testid="stToolbar"] {
+            right: 1rem;
+            top: 0.5rem;
+        }
+        .block-container {
+            padding-top: 1.8rem;
+            padding-bottom: 2rem;
+        }
+        [data-testid="stSidebar"] {
+            background: var(--sidebar-bg) !important;
+            backdrop-filter: blur(30px);
+            border-right: 1px solid var(--glass-border);
+        }
+        [data-testid="stSidebar"] * {
+            color: var(--text-main);
+        }
+        [data-testid="stSidebar"] .stCaption,
+        [data-testid="stSidebar"] label,
+        [data-testid="stSidebar"] .stMarkdown p {
+            color: var(--text-soft) !important;
+        }
+        [data-testid="stSidebar"] .stSelectbox > div > div,
+        [data-testid="stSidebar"] .stNumberInput > div > div > input {
+            background: var(--control-bg) !important;
+            color: var(--text-main) !important;
+            border: 1px solid var(--control-border) !important;
+            border-radius: 18px !important;
+        }
+        [data-testid="stSidebar"] .stNumberInput button,
+        [data-testid="stSidebar"] .stSelectbox button {
+            background: rgba(255, 255, 255, 0.72) !important;
+            color: #16304a !important;
+            border: 1px solid rgba(122, 146, 173, 0.22) !important;
+        }
+        .stSelectbox > div > div,
+        .stNumberInput > div > div > input,
+        .stTextInput > div > div > input {
+            color: var(--text-main) !important;
+        }
+        .stNumberInput input {
+            background: rgba(255, 255, 255, 0.9) !important;
+            color: #11233b !important;
+        }
+        .stRadio [role="radiogroup"] label {
+            color: #17324f !important;
+        }
+        .stButton button {
+            border-radius: 999px !important;
+            border: 1px solid var(--control-border) !important;
+            background: var(--button-bg) !important;
+            color: var(--text-main) !important;
+            box-shadow: 0 12px 26px rgba(5, 10, 20, 0.12);
+        }
+        .stButton button[kind="primary"] {
+            background: linear-gradient(135deg, rgba(100,210,255,0.84), rgba(125,122,255,0.72)) !important;
+            color: #07111f !important;
+        }
+        .hero {
+            border: 1px solid var(--glass-border);
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.86), rgba(248,251,255,0.72)),
+                radial-gradient(circle at top right, rgba(116, 219, 255, 0.18), transparent 42%);
+            backdrop-filter: blur(34px);
+            border-radius: 32px;
+            padding: 1.7rem 1.8rem;
+            box-shadow: var(--glass-shadow);
+            margin-bottom: 1rem;
+        }
+        .hero-kicker {
+            color: #1477a6;
+            font-size: 0.84rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+        }
+        .hero-title, .big-number {
+            color: #0f2037;
+        }
+        .hero-title {
+            font-size: 2.2rem;
+            line-height: 1.05;
+            font-weight: 800;
+            margin-bottom: 0.55rem;
+        }
+        .hero-copy, .support-text {
+            color: var(--text-soft);
+        }
+        .hero-copy {
+            font-size: 1rem;
+            line-height: 1.55;
+            max-width: 50rem;
+        }
+        .panel {
+            border: 1px solid var(--glass-border);
+            background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(246,250,255,0.72));
+            backdrop-filter: blur(28px);
+            border-radius: 24px;
+            padding: 1.1rem 1.2rem;
+            box-shadow: var(--glass-shadow);
+        }
+        .mini-label {
+            color: var(--text-faint);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .big-number {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-top: 0.35rem;
+        }
+        .subject-card {
+            border-radius: 24px;
+            padding: 1rem;
+            color: white;
+            min-height: 144px;
+            box-shadow: 0 18px 38px rgba(8, 15, 28, 0.18);
+            border: 1px solid rgba(255,255,255,0.35);
+            backdrop-filter: blur(22px);
+        }
+        .subject-name {
+            font-size: 0.82rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 700;
+            opacity: 0.92;
+        }
+        .subject-value {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-top: 0.25rem;
+        }
+        .subject-caption, .subject-detail {
+            font-size: 0.9rem;
+            opacity: 0.92;
+            margin-top: 0.32rem;
+        }
+        .logo-shell {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px;
+            border-radius: 26px;
+            background: linear-gradient(160deg, rgba(255, 255, 255, 0.98), rgba(232, 241, 255, 0.82));
+            box-shadow: 0 18px 42px rgba(8, 15, 28, 0.14);
+            border: 1px solid rgba(139, 168, 199, 0.32);
+        }
+        .glass-note {
+            border: 1px solid rgba(139, 168, 199, 0.24);
+            background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(246,250,255,0.72));
+            backdrop-filter: blur(22px);
+            border-radius: 22px;
+            padding: 1rem 1.1rem;
+            color: var(--text-soft);
+            box-shadow: 0 16px 34px rgba(8, 15, 28, 0.12);
+        }
+        .glass-note code {
+            background: rgba(16, 34, 56, 0.08);
+            color: #16304a;
+            border-radius: 8px;
+            padding: 0.08rem 0.4rem;
+        }
+        .stTabs [data-baseweb="tab-list"] {
+            gap: 0.65rem;
+        }
+        .stTabs [data-baseweb="tab"] {
+            background: var(--tab-bg);
+            border: 1px solid var(--control-border);
+            border-radius: 999px;
+            color: var(--text-main);
+            padding: 0.55rem 1rem;
+        }
+        .stTabs [aria-selected="true"] {
+            background: var(--tab-selected);
+        }
+        .stInfo {
+            background: rgba(188, 220, 255, 0.5) !important;
+            color: #14304d !important;
+            border: 1px solid rgba(120, 168, 220, 0.24) !important;
+        }
+        </style>
         """
+    else:
+        css = """
         <style>
         :root {
             --glass-bg: rgba(255, 255, 255, 0.12);
@@ -36,6 +251,12 @@ def inject_styles():
             --text-main: #f8fbff;
             --text-soft: rgba(233, 242, 255, 0.82);
             --text-faint: rgba(216, 229, 247, 0.7);
+            --sidebar-bg: linear-gradient(180deg, rgba(8, 15, 28, 0.76), rgba(17, 28, 46, 0.66));
+            --control-bg: rgba(11, 21, 36, 0.6);
+            --control-border: rgba(255, 255, 255, 0.12);
+            --button-bg: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.08));
+            --tab-bg: rgba(255,255,255,0.08);
+            --tab-selected: linear-gradient(135deg, rgba(100,210,255,0.22), rgba(125,122,255,0.2));
         }
         .stApp {
             background:
@@ -50,9 +271,9 @@ def inject_styles():
             padding-bottom: 2rem;
         }
         [data-testid="stSidebar"] {
-            background: linear-gradient(180deg, rgba(8, 15, 28, 0.76), rgba(17, 28, 46, 0.66)) !important;
+            background: var(--sidebar-bg) !important;
             backdrop-filter: blur(30px);
-            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            border-right: 1px solid var(--glass-border);
         }
         [data-testid="stSidebar"] * {
             color: var(--text-main);
@@ -64,15 +285,28 @@ def inject_styles():
         }
         [data-testid="stSidebar"] .stSelectbox > div > div,
         [data-testid="stSidebar"] .stNumberInput > div > div > input {
-            background: rgba(11, 21, 36, 0.6) !important;
+            background: var(--control-bg) !important;
             color: var(--text-main) !important;
-            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            border: 1px solid var(--control-border) !important;
             border-radius: 18px !important;
+        }
+        .stSelectbox > div > div,
+        .stNumberInput > div > div > input,
+        .stTextInput > div > div > input {
+            color: var(--text-main) !important;
+        }
+        .stRadio label,
+        .stCheckbox label,
+        .stMarkdown,
+        .stAlert,
+        .stMetric,
+        [data-testid="stDataFrame"] {
+            color: var(--text-main);
         }
         .stButton button {
             border-radius: 999px !important;
-            border: 1px solid rgba(255, 255, 255, 0.14) !important;
-            background: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.08)) !important;
+            border: 1px solid var(--control-border) !important;
+            background: var(--button-bg) !important;
             color: var(--text-main) !important;
             box-shadow: 0 12px 26px rgba(5, 10, 20, 0.24);
         }
@@ -188,19 +422,18 @@ def inject_styles():
             gap: 0.65rem;
         }
         .stTabs [data-baseweb="tab"] {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.12);
+            background: var(--tab-bg);
+            border: 1px solid var(--control-border);
             border-radius: 999px;
             color: var(--text-main);
             padding: 0.55rem 1rem;
         }
         .stTabs [aria-selected="true"] {
-            background: linear-gradient(135deg, rgba(100,210,255,0.22), rgba(125,122,255,0.2));
+            background: var(--tab-selected);
         }
         </style>
-        """,
-        unsafe_allow_html=True,
-    )
+        """
+    st.markdown(css, unsafe_allow_html=True)
 
 
 def build_trace_rows(trace):
@@ -566,10 +799,10 @@ def render_compare(task_name):
 
 def main():
     st.set_page_config(page_title="EduDynamics", page_icon="📚", layout="wide")
-    inject_styles()
-    render_hero()
 
     with st.sidebar:
+        appearance = st.segmented_control("Appearance", options=["Dark", "Light"], default="Dark", selection_mode="single")
+        inject_styles(appearance.lower())
         render_logo(132, framed=True)
         st.markdown("### EduDynamics")
         st.caption("Liquid-glass study planning simulator")
@@ -595,6 +828,8 @@ def main():
             unsafe_allow_html=True,
         )
         run_clicked = st.button("Run Simulation", type="primary", use_container_width=True)
+
+    render_hero()
 
     if "summary" not in st.session_state:
         st.session_state.summary = None
