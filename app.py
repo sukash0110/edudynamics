@@ -10,9 +10,9 @@ from study_env.tasks import TASKS
 
 LOGO_PATH = "assets/edudynamics-logo.svg"
 SUBJECT_COLORS = {
-    "math": "#0f766e",
-    "physics": "#1d4ed8",
-    "chemistry": "#c2410c",
+    "math": "#64d2ff",
+    "physics": "#7d7aff",
+    "chemistry": "#9cf28f",
 }
 ACTION_LABELS = {
     0: "Study Math",
@@ -29,26 +29,70 @@ def inject_styles():
     st.markdown(
         """
         <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.12);
+            --glass-border: rgba(255, 255, 255, 0.22);
+            --glass-shadow: 0 28px 72px rgba(8, 15, 28, 0.28);
+            --text-main: #f8fbff;
+            --text-soft: rgba(233, 242, 255, 0.82);
+            --text-faint: rgba(216, 229, 247, 0.7);
+        }
         .stApp {
             background:
-                radial-gradient(circle at top left, rgba(13, 148, 136, 0.18), transparent 28%),
-                radial-gradient(circle at top right, rgba(29, 78, 216, 0.18), transparent 30%),
-                linear-gradient(180deg, #f4f7f4 0%, #eef4ff 100%);
+                radial-gradient(circle at 15% 18%, rgba(100, 210, 255, 0.42), transparent 24%),
+                radial-gradient(circle at 84% 14%, rgba(125, 122, 255, 0.35), transparent 26%),
+                radial-gradient(circle at 78% 82%, rgba(156, 242, 143, 0.24), transparent 22%),
+                linear-gradient(145deg, #07101b 0%, #142338 38%, #1b2d48 100%);
+            color: var(--text-main);
         }
         .block-container {
-            padding-top: 2rem;
+            padding-top: 1.8rem;
             padding-bottom: 2rem;
         }
+        [data-testid="stSidebar"] {
+            background: linear-gradient(180deg, rgba(8, 15, 28, 0.76), rgba(17, 28, 46, 0.66)) !important;
+            backdrop-filter: blur(30px);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        [data-testid="stSidebar"] * {
+            color: var(--text-main);
+        }
+        [data-testid="stSidebar"] .stCaption,
+        [data-testid="stSidebar"] label,
+        [data-testid="stSidebar"] .stMarkdown p {
+            color: var(--text-soft) !important;
+        }
+        [data-testid="stSidebar"] .stSelectbox > div > div,
+        [data-testid="stSidebar"] .stNumberInput > div > div > input {
+            background: rgba(11, 21, 36, 0.6) !important;
+            color: var(--text-main) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            border-radius: 18px !important;
+        }
+        .stButton button {
+            border-radius: 999px !important;
+            border: 1px solid rgba(255, 255, 255, 0.14) !important;
+            background: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.08)) !important;
+            color: var(--text-main) !important;
+            box-shadow: 0 12px 26px rgba(5, 10, 20, 0.24);
+        }
+        .stButton button[kind="primary"] {
+            background: linear-gradient(135deg, rgba(100,210,255,0.84), rgba(125,122,255,0.82)) !important;
+            color: #07111f !important;
+        }
         .hero {
-            border: 1px solid rgba(15, 23, 42, 0.08);
-            background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(239,246,255,0.92));
-            border-radius: 24px;
-            padding: 1.5rem 1.6rem;
-            box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+            border: 1px solid var(--glass-border);
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.06)),
+                radial-gradient(circle at top right, rgba(116, 219, 255, 0.18), transparent 42%);
+            backdrop-filter: blur(34px);
+            border-radius: 32px;
+            padding: 1.7rem 1.8rem;
+            box-shadow: var(--glass-shadow);
             margin-bottom: 1rem;
         }
         .hero-kicker {
-            color: #0f766e;
+            color: #9fe7ff;
             font-size: 0.84rem;
             font-weight: 700;
             letter-spacing: 0.08em;
@@ -56,78 +100,102 @@ def inject_styles():
             margin-bottom: 0.4rem;
         }
         .hero-title {
-            color: #0f172a;
+            color: #ffffff;
             font-size: 2.2rem;
             line-height: 1.05;
             font-weight: 800;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.55rem;
         }
         .hero-copy {
-            color: #334155;
+            color: var(--text-soft);
             font-size: 1rem;
             line-height: 1.55;
-            max-width: 48rem;
+            max-width: 50rem;
         }
         .panel {
-            border: 1px solid rgba(15, 23, 42, 0.08);
-            background: rgba(255, 255, 255, 0.82);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            backdrop-filter: blur(28px);
+            border-radius: 24px;
             padding: 1.1rem 1.2rem;
-            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+            box-shadow: var(--glass-shadow);
         }
         .mini-label {
-            color: #64748b;
+            color: var(--text-faint);
             font-size: 0.8rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.08em;
         }
         .big-number {
-            color: #0f172a;
+            color: #ffffff;
             font-size: 2rem;
             font-weight: 800;
             line-height: 1.1;
             margin-top: 0.35rem;
         }
         .support-text {
-            color: #475569;
+            color: var(--text-soft);
             font-size: 0.92rem;
             margin-top: 0.25rem;
         }
         .subject-card {
-            border-radius: 18px;
+            border-radius: 24px;
             padding: 1rem;
             color: white;
-            min-height: 112px;
-            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+            min-height: 144px;
+            box-shadow: 0 18px 38px rgba(8, 15, 28, 0.26);
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(22px);
         }
         .subject-name {
             font-size: 0.82rem;
             letter-spacing: 0.08em;
             text-transform: uppercase;
             font-weight: 700;
-            opacity: 0.9;
+            opacity: 0.92;
         }
         .subject-value {
             font-size: 2rem;
             font-weight: 800;
             margin-top: 0.25rem;
         }
-        .subject-caption {
-            font-size: 0.92rem;
+        .subject-caption, .subject-detail {
+            font-size: 0.9rem;
             opacity: 0.9;
-            margin-top: 0.35rem;
+            margin-top: 0.32rem;
         }
         .logo-shell {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             padding: 14px;
-            border-radius: 24px;
-            background: linear-gradient(160deg, rgba(255, 255, 255, 0.96), rgba(232, 241, 255, 0.92));
-            box-shadow: 0 14px 36px rgba(15, 23, 42, 0.22);
-            border: 1px solid rgba(148, 163, 184, 0.26);
+            border-radius: 26px;
+            background: linear-gradient(160deg, rgba(255, 255, 255, 0.9), rgba(222, 236, 255, 0.5));
+            box-shadow: 0 18px 42px rgba(8, 15, 28, 0.34);
+            border: 1px solid rgba(255, 255, 255, 0.34);
+        }
+        .glass-note {
+            border: 1px solid rgba(255,255,255,0.16);
+            background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
+            backdrop-filter: blur(22px);
+            border-radius: 22px;
+            padding: 1rem 1.1rem;
+            color: var(--text-soft);
+            box-shadow: 0 16px 34px rgba(8, 15, 28, 0.24);
+        }
+        .stTabs [data-baseweb="tab-list"] {
+            gap: 0.65rem;
+        }
+        .stTabs [data-baseweb="tab"] {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 999px;
+            color: var(--text-main);
+            padding: 0.55rem 1rem;
+        }
+        .stTabs [aria-selected="true"] {
+            background: linear-gradient(135deg, rgba(100,210,255,0.22), rgba(125,122,255,0.2));
         }
         </style>
         """,
@@ -146,6 +214,8 @@ def build_trace_rows(trace):
                 "energy": item["energy"],
                 "avg_mastery": item["avg_mastery"],
                 "imbalance": item["imbalance"],
+                "cognitive_load": item.get("cognitive_load", 0.0),
+                "recovery_score": item.get("recovery_score", 0.0),
                 "reward": item["reward"],
                 "action_type": action["type"],
                 "subject": action["subject"] or "all",
@@ -168,6 +238,24 @@ def build_subject_rows(trace):
     for item in trace:
         row = {"step": item["step"]}
         row.update(item.get("mastery", {}))
+        rows.append(row)
+    return rows
+
+
+def build_memory_rows(trace):
+    rows = []
+    for item in trace:
+        row = {"step": item["step"]}
+        row.update(item.get("memory_strength", {}))
+        rows.append(row)
+    return rows
+
+
+def build_retention_rows(trace):
+    rows = []
+    for item in trace:
+        row = {"step": item["step"]}
+        row.update(item.get("retention_risk", {}))
         rows.append(row)
     return rows
 
@@ -196,10 +284,10 @@ def render_hero():
         st.markdown(
             """
             <div class="hero">
-                <div class="hero-kicker">EduDynamics 1.0.1</div>
-                <div class="hero-title">Build sustainable study momentum across math, physics, and chemistry.</div>
+                <div class="hero-kicker">EduDynamics 1.0.3</div>
+                <div class="hero-title">A liquid-glass command center for real study momentum.</div>
                 <div class="hero-copy">
-                    Explore manual interventions, compare planning styles, and inspect how reward components evolve as the student balances progress, recovery, and subject coverage.
+                    Explore manual interventions, richer reward telemetry, retention risk, and memory strength as the planner balances focus, recovery, spacing, and subject coverage.
                 </div>
             </div>
             """,
@@ -210,12 +298,13 @@ def render_hero():
 def render_metric_panels(summary):
     episode = summary["episode_summary"]
     cards = [
-        ("Total Reward", summary["total_reward"], "Composite score across performance, balance, and energy use."),
-        ("Average Mastery", episode.get("average_mastery"), "Final mastery averaged across all three subjects."),
-        ("Balance Gap", episode.get("balance_gap"), "Lower is better. Zero means perfectly balanced learning."),
-        ("Energy Left", episode.get("energy_left"), "Remaining energy at the end of the episode."),
+        ("Total Reward", summary["total_reward"], "Composite score across progress, retention, spacing, and recovery."),
+        ("Average Mastery", episode.get("average_mastery"), "Final skill level averaged across all three subjects."),
+        ("Memory Strength", episode.get("average_memory_strength"), "How durable the learned material is after consolidation."),
+        ("Balance Gap", episode.get("balance_gap"), "Lower is better. Zero means balanced study coverage."),
+        ("Recovery", episode.get("recovery_score"), "Readiness preserved through rest and sustainable pacing."),
     ]
-    columns = st.columns(4)
+    columns = st.columns(len(cards))
     for column, (label, value, copy) in zip(columns, cards):
         column.markdown(
             f"""
@@ -231,6 +320,8 @@ def render_metric_panels(summary):
 
 def render_subject_cards(summary):
     mastery = summary["final_state"]["mastery"]
+    memory_strength = summary["final_state"].get("memory_strength", {})
+    retention_risk = summary["final_state"].get("retention_risk", {})
     avg_mastery = summary["episode_summary"]["average_mastery"]
     cols = st.columns(3)
     for col, subject in zip(cols, ("math", "physics", "chemistry")):
@@ -240,10 +331,12 @@ def render_subject_cards(summary):
         caption = "Above plan average" if delta >= 0 else "Below plan average"
         col.markdown(
             f"""
-            <div class="subject-card" style="background: linear-gradient(160deg, {color}, rgba(15, 23, 42, 0.92));">
+            <div class="subject-card" style="background: linear-gradient(160deg, {color}, rgba(18, 26, 50, 0.88));">
                 <div class="subject-name">{subject}</div>
                 <div class="subject-value">{value:.4f}</div>
                 <div class="subject-caption">{caption}: {delta:+.4f}</div>
+                <div class="subject-detail">Memory strength: {memory_strength.get(subject, 0):.4f}</div>
+                <div class="subject-detail">Retention risk: {retention_risk.get(subject, 0):.4f}</div>
             </div>
             """,
             unsafe_allow_html=True,
@@ -267,7 +360,9 @@ def render_plan_snapshot(summary):
                     Agent: <strong>{summary.get("agent_mode", "heuristic")}</strong><br>
                     Mode: <strong>{mode_label}</strong><br>
                     Seed: <strong>{seed_label}</strong><br>
-                    Steps executed: <strong>{summary["steps"]}</strong>
+                    Steps executed: <strong>{summary["steps"]}</strong><br>
+                    Final cognitive load: <strong>{summary["episode_summary"].get("cognitive_load", 0)}</strong><br>
+                    Final recovery score: <strong>{summary["episode_summary"].get("recovery_score", 0)}</strong>
                 </div>
             </div>
             """,
@@ -279,21 +374,25 @@ def render_plan_snapshot(summary):
             min(summary["episode_summary"]["average_mastery"], 1.0),
             text=f"Average mastery reached: {summary['episode_summary']['average_mastery']:.0%}",
         )
+        st.progress(
+            min(summary["episode_summary"].get("average_memory_strength", 0.0), 1.0),
+            text=f"Memory durability reached: {summary['episode_summary'].get('average_memory_strength', 0.0):.0%}",
+        )
     with right:
         st.markdown("### Reward Design")
         st.markdown(
             """
             <div class="panel">
                 <div class="support-text">
-                    EduDynamics 1.0.1 exposes the reward composition more clearly:
+                    EduDynamics 1.0.3 now optimizes for learning that lasts:
                     <br><br>
                     <strong>Performance</strong> rewards mastery gains.
                     <br>
-                    <strong>Balance</strong> favors even subject coverage.
+                    <strong>Retention</strong> rewards stronger memory traces.
                     <br>
-                    <strong>Energy efficiency</strong> rewards progress per unit of effort.
+                    <strong>Spacing</strong> favors timely revision over cramming.
                     <br>
-                    <strong>Penalties</strong> discourage imbalance and poor recovery choices.
+                    <strong>Recovery</strong> rewards lower load and better pacing.
                 </div>
             </div>
             """,
@@ -305,6 +404,8 @@ def render_analytics(summary):
     rows = build_trace_rows(summary["trace"])
     reward_rows = build_reward_rows(summary["trace"])
     subject_rows = build_subject_rows(summary["trace"])
+    memory_rows = build_memory_rows(summary["trace"])
+    retention_rows = build_retention_rows(summary["trace"])
 
     st.markdown("### Analytics")
     chart_cols = st.columns(3)
@@ -318,15 +419,25 @@ def render_analytics(summary):
         st.markdown("**Reward by step**")
         st.bar_chart([{"step": row["step"], "reward": row["reward"]} for row in rows], x="step", y="reward")
 
-    lower_cols = st.columns(2)
-    with lower_cols[0]:
+    middle_cols = st.columns(2)
+    with middle_cols[0]:
         st.markdown("**Reward component breakdown**")
         if reward_rows:
             st.area_chart(reward_rows, x="step")
-    with lower_cols[1]:
+    with middle_cols[1]:
         st.markdown("**Subject mastery over time**")
         if subject_rows:
             st.line_chart(subject_rows, x="step")
+
+    lower_cols = st.columns(2)
+    with lower_cols[0]:
+        st.markdown("**Memory strength over time**")
+        if memory_rows:
+            st.line_chart(memory_rows, x="step")
+    with lower_cols[1]:
+        st.markdown("**Retention risk over time**")
+        if retention_rows:
+            st.line_chart(retention_rows, x="step")
 
     view = st.segmented_control("Trace view", options=["Recent", "Full"], default="Recent", selection_mode="single")
     if view == "Recent":
@@ -382,6 +493,8 @@ def render_manual_lab(task_name, stochastic, seed):
                 "energy": next_obs["energy"],
                 "avg_mastery": next_obs["avg_mastery"],
                 "imbalance": next_obs["imbalance"],
+                "cognitive_load": next_obs.get("cognitive_load", 0.0),
+                "recovery_score": next_obs.get("recovery_score", 0.0),
                 "reward_breakdown": info.get("reward_breakdown", {}),
             }
         )
@@ -393,18 +506,29 @@ def render_manual_lab(task_name, stochastic, seed):
     top_cols[2].metric("Average Mastery", observation["avg_mastery"])
     top_cols[3].metric("Imbalance", observation["imbalance"])
 
+    state_cols = st.columns(2)
+    state_cols[0].metric("Cognitive Load", observation.get("cognitive_load", 0.0))
+    state_cols[1].metric("Recovery Score", observation.get("recovery_score", 0.0))
+
     mastery_cols = st.columns(3)
     for col, subject in zip(mastery_cols, ("math", "physics", "chemistry")):
-        col.metric(subject.title(), observation["mastery"][subject])
+        col.metric(
+            subject.title(),
+            observation["mastery"][subject],
+            delta=f"memory {observation.get('memory_strength', {}).get(subject, 0.0):.4f}",
+        )
 
     if st.session_state.manual_history:
         last = st.session_state.manual_history[-1]
         st.markdown("**Latest reward breakdown**")
         component_rows = [{"component": key, "value": value} for key, value in last["reward_breakdown"].items()]
         st.bar_chart(component_rows, x="component", y="value")
+        st.markdown("**Current retention risk**")
+        risk_rows = [{"subject": key, "risk": value} for key, value in observation.get("retention_risk", {}).items()]
+        st.bar_chart(risk_rows, x="subject", y="risk")
         st.dataframe(st.session_state.manual_history, use_container_width=True, hide_index=True, height=240)
     else:
-        st.info("Step through the environment manually to inspect reward components and state transitions.")
+        st.info("Step through the environment manually to inspect reward components, retention risk, and state transitions.")
 
 
 def render_compare(task_name):
@@ -416,6 +540,7 @@ def render_compare(task_name):
         st.markdown("**Heuristic baseline**")
         st.metric("Total Reward", heuristic_summary["total_reward"])
         st.metric("Average Mastery", heuristic_summary["episode_summary"]["average_mastery"])
+        st.metric("Memory Strength", heuristic_summary["episode_summary"].get("average_memory_strength", 0.0))
         st.metric("Balance Gap", heuristic_summary["episode_summary"]["balance_gap"])
 
     with compare_col2:
@@ -430,6 +555,7 @@ def render_compare(task_name):
             "agent": "heuristic",
             "total_reward": heuristic_summary["total_reward"],
             "average_mastery": heuristic_summary["episode_summary"]["average_mastery"],
+            "memory_strength": heuristic_summary["episode_summary"].get("average_memory_strength", 0.0),
             "balance_gap": heuristic_summary["episode_summary"]["balance_gap"],
             "energy_left": heuristic_summary["episode_summary"]["energy_left"],
             "steps": heuristic_summary["steps"],
@@ -446,7 +572,7 @@ def main():
     with st.sidebar:
         render_logo(132, framed=True)
         st.markdown("### EduDynamics")
-        st.caption("Energy-aware student planning simulator")
+        st.caption("Liquid-glass study planning simulator")
         st.markdown("---")
         st.markdown("## Simulation Controls")
         st.caption("Configure the planner, then run a full episode.")
@@ -457,12 +583,16 @@ def main():
         task = TASKS[task_name]
         st.markdown(
             f"""
-            **Task profile**
-
-            - Days: `{task['days']}`
-            - Daily target: `{task['daily_target']}`
-            - Max energy: `{task['max_energy']}`
-            """
+            <div class="glass-note">
+                <strong>Task profile</strong><br><br>
+                Days: <code>{task['days']}</code><br>
+                Daily target: <code>{task['daily_target']}</code><br>
+                Max energy: <code>{task['max_energy']}</code><br>
+                Decay rate: <code>{task['decay_rate']}</code><br>
+                Spacing target: <code>{task['spacing_target']}</code>
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
         run_clicked = st.button("Run Simulation", type="primary", use_container_width=True)
 
@@ -479,7 +609,7 @@ def main():
 
     summary = st.session_state.summary
     if summary is None:
-        st.info("Pick a task profile and run the planner to open the 1.0.1 analytics workspace.")
+        st.info("Pick a task profile and run the planner to open the liquid-glass 1.0.3 analytics workspace.")
         return
 
     render_metric_panels(summary)

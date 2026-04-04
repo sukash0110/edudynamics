@@ -4,5 +4,5 @@ requires-python = ">=3.11"
 
 [[package]]
 name = "edudynamics"
-version = "1.0.1"
+version = "1.0.3"
 source = { editable = "." }

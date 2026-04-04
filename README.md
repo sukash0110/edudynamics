@@ -1,5 +1,5 @@
 ---
-title: EduDynamics 1.0.1
+title: EduDynamics 1.0.3
 emoji: 📚
 colorFrom: blue
 colorTo: green
@@ -7,18 +7,18 @@ sdk: docker
 app_port: 8501
 pinned: false
 license: mit
-short_description: EduDynamics 1.0.1 with analytics and OpenEnv API.
+short_description: EduDynamics 1.0.3 with glass UI and learning dynamics.
 ---
 
-# EduDynamics 1.0.1
+# EduDynamics 1.0.3
 
-Student Study Planner with energy, balance, performance optimization, and a hybrid analytics workspace.
+Student Study Planner with energy, balance, performance optimization, a liquid-glass analytics workspace, and more realistic learning dynamics.
 
 ![EduDynamics logo](assets/edudynamics-logo.svg)
 
 An OpenEnv-style reinforcement learning environment where an agent must plan study actions across math, physics, and chemistry while managing fatigue, subject imbalance, and long-horizon performance.
 
-Version `1.0.1` adds a richer Streamlit analytics workspace with manual stepping, reward-component inspection, and side-by-side baseline comparison while preserving the validator-ready OpenEnv API.
+Version `1.0.3` adds the liquid-glass UI refresh plus a more realistic learning model with retention risk, memory strength, spacing, and recovery-aware planning while preserving the validator-ready OpenEnv API.
 
 ## Submission Checklist Alignment
 
@@ -129,12 +129,13 @@ Behavior summary:
 
 The OpenAI baseline runs with temperature `0` so the action policy remains reproducible for a fixed model and prompt.
 
-## What's New In 1.0.1
+## What's New In 1.0.3
 
+- Apple-inspired liquid-glass dashboard styling across the Streamlit app
 - manual step-by-step simulation lab inside the Streamlit UI
 - reward component visualizations across the episode
-- subject mastery trend charts
-- richer trace inspection with state and reward context
+- subject mastery, memory-strength, and retention-risk trend charts
+- real learning integration with spacing, forgetting, consolidation, and cognitive load
 - heuristic baseline comparison workspace
 
 ## Grading Strategy
@@ -224,7 +225,7 @@ Live Space:
 
 [https://huggingface.co/spaces/sukash0110/study_planner_env](https://huggingface.co/spaces/sukash0110/study_planner_env)
 
-This repo is configured as a Docker-based Hugging Face Space and serves the `1.0.1` hybrid deployment on port `8501`:
+This repo is configured as a Docker-based Hugging Face Space and serves the `1.0.3` hybrid deployment on port `8501`:
 
 - `/` shows a branded landing page with the embedded Streamlit demo
 - `/ui` serves the full Streamlit application natively
@@ -253,8 +254,9 @@ These are available as environment placeholders in the Docker image and can be o
 
 ## Environment Notes
 
-- studying gives larger gains but consumes more energy
-- revision improves one subject and lightly reinforces the others
+- studying gives larger gains but now interacts with spacing, fatigue, and memory durability
+- revision improves one subject, reinforces others, and reduces retention risk when timed well
+- end-of-day consolidation and forgetting make the learning loop more realistic
 - rest restores energy and supports sustainable planning
 - deterministic mode is intended for reproducible evaluation
 - stochastic and randomize modes are intended for exploratory analysis

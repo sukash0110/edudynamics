@@ -19,11 +19,16 @@ class DeterministicPlannerAgent:
         energy = observation["energy"]
         mastery = observation["mastery"]
         imbalance = observation["imbalance"]
+        retention_risk = observation.get("retention_risk", {})
+        cognitive_load = observation.get("cognitive_load", 0.0)
         weakest_subject = min(mastery, key=mastery.get)
         strongest_subject = max(mastery, key=mastery.get)
+        highest_risk_subject = max(retention_risk, key=retention_risk.get) if retention_risk else weakest_subject
 
-        if energy <= 2.5:
+        if energy <= 2.5 or cognitive_load >= 0.86:
             action = 6
+        elif retention_risk and retention_risk[highest_risk_subject] >= 0.64:
+            action = {"math": 3, "physics": 4, "chemistry": 5}[highest_risk_subject]
         elif imbalance >= 0.18:
             action = {"math": 3, "physics": 4, "chemistry": 5}[weakest_subject]
         elif mastery[weakest_subject] <= 0.72:
@@ -124,6 +129,10 @@ def run_episode(task_name, stochastic=False, seed=123, agent_mode="heuristic"):
                 "avg_mastery": observation["avg_mastery"],
                 "imbalance": observation["imbalance"],
                 "mastery": observation["mastery"],
+                "memory_strength": observation.get("memory_strength", {}),
+                "retention_risk": observation.get("retention_risk", {}),
+                "cognitive_load": observation.get("cognitive_load", 0.0),
+                "recovery_score": observation.get("recovery_score", 0.0),
                 "action": info["action"],
                 "reward": reward,
                 "reward_breakdown": info.get("reward_breakdown", {}),
@@ -155,6 +164,7 @@ def print_summary(summary):
     print(f"Steps: {summary['steps']}")
     print(f"Total reward: {summary['total_reward']}")
     print(f"Final average mastery: {episode.get('average_mastery')}")
+    print(f"Final memory strength: {episode.get('average_memory_strength')}")
     print(f"Final balance gap: {episode.get('balance_gap')}")
     print(f"Energy left: {episode.get('energy_left')}")
     print("Trace tail:")

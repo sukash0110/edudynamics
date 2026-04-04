@@ -94,8 +94,8 @@ def landing_page(_request):
               <div class="brand">
                 <img src="/logo" alt="EduDynamics logo" />
                 <div>
-                  <div class="brand-title">EduDynamics 1.0.1</div>
-                  <div class="brand-copy">Manual strategy lab, richer reward analytics, and evaluator-ready study planning in one Space.</div>
+                  <div class="brand-title">EduDynamics 1.0.3</div>
+                  <div class="brand-copy">Liquid-glass simulation with retention-aware learning dynamics and evaluator-ready APIs.</div>
                 </div>
               </div>
               <div class="actions">

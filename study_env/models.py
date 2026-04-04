@@ -8,6 +8,9 @@ class TaskConfigModel(BaseModel):
     days: int
     max_energy: float
     daily_target: float
+    decay_rate: float
+    consolidation_rate: float
+    spacing_target: int
     initial_mastery: Dict[str, float]
 
 
@@ -39,9 +42,13 @@ class StateModel(BaseModel):
     energy: float
     energy_ratio: float
     mastery: Dict[str, float]
+    memory_strength: Dict[str, float]
+    retention_risk: Dict[str, float]
     avg_mastery: float
     imbalance: float
     daily_target: float
+    cognitive_load: float
+    recovery_score: float
     stochastic: bool
     seed: Optional[int]
     action_meanings: Dict[int, str]
