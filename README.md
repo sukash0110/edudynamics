@@ -27,6 +27,9 @@ Live links:
 
 - GitHub: [sukash0110/study_planner_env](https://github.com/sukash0110/study_planner_env)
 - Hugging Face Space: [EduDynamics](https://huggingface.co/spaces/sukash0110/study_planner_env)
+- Colab notebook: [Open in Colab](https://colab.research.google.com/github/sukash0110/study_planner_env/blob/main/docs/colab/EduDynamics_Quickstart.ipynb)
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sukash0110/study_planner_env/blob/main/docs/colab/EduDynamics_Quickstart.ipynb)
 
 Version `1.1.1` improves judge-facing benchmark quality with `AuraUI 1.1.1`, a harder deadline-aware long-horizon task, and a stronger grader that scores deadline readiness alongside reward, mastery, and balance.
 
@@ -47,6 +50,19 @@ This repo is structured to satisfy the common first-round validator checks:
 - environment variable placeholders for `API_BASE_URL`, `MODEL_NAME`, and `HF_TOKEN`
 - OpenAI baseline support through `OPENAI_API_KEY`
 - OpenEnv packaging pieces including `pyproject.toml`, `uv.lock`, and `server/app.py`
+
+## Colab Quickstart
+
+If you want a browser-based runner, open the included Colab notebook:
+
+- [EduDynamics Quickstart](https://colab.research.google.com/github/sukash0110/study_planner_env/blob/main/docs/colab/EduDynamics_Quickstart.ipynb)
+
+It will:
+
+- clone the public GitHub repo
+- install dependencies
+- run `python validate_submission.py`
+- run `python inference.py --agent heuristic`
 
 ## Project Layout
 
