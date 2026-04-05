@@ -1,6 +1,6 @@
 ---
 title: EduDynamics 1.1.1
-emoji: 📚
+emoji: "📚"
 colorFrom: blue
 colorTo: green
 sdk: docker
@@ -12,7 +12,7 @@ short_description: EduDynamics 1.1.1 with tougher tasks and stronger grading.
 
 # EduDynamics 1.1.1
 
-EduDynamics is a real-world OpenEnv reinforcement learning environment for student study planning across math, physics, and chemistry under energy, balance, and long-horizon retention constraints.
+EduDynamics is a real-world OpenEnv reinforcement learning environment for student study planning across math, physics, and chemistry under energy, balance, retention, and deadline constraints.
 
 ![EduDynamics logo](ui/assets/edudynamics-logo.svg)
 
@@ -21,7 +21,7 @@ This submission includes:
 - a validator-ready OpenEnv environment with `reset()`, `step()`, and `state()`
 - three tasks (`easy`, `medium`, `hard`) with deterministic grading in the `0.0` to `1.0` range
 - a root `inference.py`, Docker/Hugging Face deployment path, and public demo
-- shaped rewards covering performance, subject balance, energy efficiency, spacing, retention, and recovery
+- shaped rewards covering performance, subject balance, energy efficiency, spacing, retention, recovery, and deadline readiness
 
 Live links:
 
@@ -50,15 +50,16 @@ This repo is structured to satisfy the common first-round validator checks:
 
 ## Project Layout
 
-The repository is organized so the hackathon-required root entry points still exist, while the main implementation lives in named folders:
+The repository keeps only the validator-required entry files at the root, while the implementation lives in clearly named folders:
 
-- `ui/`: Streamlit dashboard implementation
+- `study_env/`: environment logic, typed models, tasks, and API
+- `ui/`: Streamlit dashboard and UI assets
 - `runtime/`: inference agents and episode runner
-- `evaluation/`: grader logic and scoring
-- `tooling/`: local validation utilities
-- `study_env/`: OpenEnv environment, typed models, API, and tasks
-- `server/`: hybrid Hugging Face deployment entrypoint
-- root wrappers: compatibility files for `app.py`, `inference.py`, `grader.py`, and `validate_submission.py`
+- `evaluation/`: grader logic and benchmark scoring
+- `server/`: hybrid Hugging Face entrypoint
+- `tooling/`: validation helpers and repo scripts
+- `docs/`: changelog and supporting documentation
+- root wrappers: `app.py`, `inference.py`, `grader.py`, and `validate_submission.py`
 
 ## Preview
 
@@ -66,7 +67,7 @@ The repository is organized so the hackathon-required root entry points still ex
 
 ![EduDynamics dashboard](ui/assets/dashboard-preview.svg)
 
-### Walkthrough GIF
+### Walkthrough Visual
 
 ![EduDynamics walkthrough](ui/assets/planner-walkthrough.svg)
 
@@ -79,7 +80,7 @@ Real students do not just maximize raw study hours. They must:
 - decide when to learn, reinforce, or recover
 - avoid over-optimizing one subject while neglecting others
 
-This makes study planning a strong real-world sequential decision problem. Short-term gains can hurt long-term performance if the policy ignores balance or recovery.
+This makes study planning a strong real-world sequential decision problem. Short-term gains can hurt long-term performance if the policy ignores balance, recovery, or deadline timing.
 
 What this environment evaluates well:
 
@@ -117,6 +118,7 @@ Core simulation elements:
 - multi-day progression
 - separate effects for studying, revising, and resting
 - deterministic and stochastic execution modes
+- memory strength, retention risk, spacing, and deadline-aware pressure
 
 ## Reward Design
 
@@ -128,6 +130,7 @@ It combines:
 - balance across subjects
 - energy efficiency
 - targeted support for the weakest subject
+- deadline readiness
 - penalties for subject imbalance
 - penalties for poor low-energy decisions
 - mild penalties for wasteful rest actions
@@ -138,7 +141,7 @@ This encourages policies that make consistent progress without collapsing into o
 
 - `easy`: 5 days, lower mastery targets
 - `medium`: 10 days, moderate planning horizon
-- `hard`: 15 days, longer horizon with stronger balance demands, weighted subject priorities, and deadline pressure
+- `hard`: 15 days, longer horizon with weighted subject priorities and deadline pressure
 
 ## Baseline Agent
 
@@ -152,13 +155,7 @@ The deterministic fallback policy adapts to:
 - current energy level
 - weakest subject
 - mastery imbalance
-
-Behavior summary:
-
-- rests when energy is critically low
-- revises the weakest subject when imbalance becomes large
-- studies the weakest subject when mastery is still behind
-- stays reproducible for grading
+- retention risk and deadline pressure
 
 The OpenAI baseline runs with temperature `0` so the action policy remains reproducible for a fixed model and prompt.
 
@@ -187,31 +184,45 @@ This makes the benchmark easier to interpret in a hackathon review setting.
 
 ```text
 study_planner_env/
-├── docs/
-├── evaluation/
-│   ├── __init__.py
-│   └── grader_runner.py
-├── runtime/
-│   ├── __init__.py
-│   └── inference_runner.py
-├── server/
-├── study_env/
-├── tooling/
-│   ├── __init__.py
-│   ├── scripts/
-│   └── validate_submission_runner.py
-├── ui/
-│   ├── __init__.py
-│   ├── assets/
-│   └── dashboard.py
-├── app.py
-├── inference.py
-├── grader.py
-├── openenv.yaml
-├── README.md
-├── Dockerfile
-├── requirements.txt
-└── validate_submission.py
+|-- docs/
+|   `-- CHANGELOG.md
+|-- evaluation/
+|   |-- __init__.py
+|   `-- grader_runner.py
+|-- runtime/
+|   |-- __init__.py
+|   `-- inference_runner.py
+|-- server/
+|   |-- __init__.py
+|   `-- app.py
+|-- study_env/
+|   |-- __init__.py
+|   |-- api.py
+|   |-- env.py
+|   |-- models.py
+|   `-- tasks.py
+|-- tooling/
+|   |-- __init__.py
+|   |-- scripts/
+|   |   |-- generate_readme_assets.py
+|   |   `-- validate-submission.sh
+|   `-- validate_submission_runner.py
+|-- ui/
+|   |-- __init__.py
+|   |-- assets/
+|   |   |-- dashboard-preview.svg
+|   |   |-- edudynamics-logo.svg
+|   |   `-- planner-walkthrough.svg
+|   `-- dashboard.py
+|-- app.py
+|-- inference.py
+|-- grader.py
+|-- validate_submission.py
+|-- openenv.yaml
+|-- Dockerfile
+|-- pyproject.toml
+|-- requirements.txt
+`-- README.md
 ```
 
 ## Run Locally
@@ -271,12 +282,11 @@ Live Space:
 
 [https://huggingface.co/spaces/sukash0110/study_planner_env](https://huggingface.co/spaces/sukash0110/study_planner_env)
 
-This repo is configured as a Docker-based Hugging Face Space and serves the `1.1.0` hybrid deployment on port `8501`:
+This repo is configured as a Docker-based Hugging Face Space and serves the `1.1.1` hybrid deployment on port `8501`:
 
 - `/` shows a branded landing page with the embedded Streamlit demo
 - `/ui` serves the full Streamlit application natively
 - `/api/*` serves the OpenEnv-compatible API
-- `/health` remains available through the mounted API
 
 For validator-style API checks, the deployment also exposes:
 
