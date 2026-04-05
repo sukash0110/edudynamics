@@ -13,15 +13,6 @@ Focus: major bug fixes and quality improvements.
 - aligned the landing page, API metadata, package metadata, and README to the same release version
 - kept hybrid deployment and validator compliance intact
 
-## 1.1.1
-
-Focus: per-run reward review and feedback clarity.
-
-- added a reward-based review card for every simulation run in the Streamlit UI
-- stored recent run reviews in session history so repeat runs can be compared quickly
-- grounded UI feedback in the same grading thresholds used by the evaluator
-- refreshed landing-page and package metadata copy to match the `1.1.1` release
-
 ## 1.0.3
 
 Focus: realistic learning integration plus the polished liquid-glass UI line.

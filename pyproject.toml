@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "edudynamics"
-version = "1.1.1"
-description = "EduDynamics 1.1.1: a liquid-glass study planning environment with per-run reward reviews, realistic learning dynamics, hybrid UI, grader, and baseline inference."
+version = "1.1.0"
+description = "EduDynamics 1.1.0: a liquid-glass study planning environment with realistic learning dynamics, hybrid UI, grader, and baseline inference."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }

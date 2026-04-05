@@ -1,19 +1,17 @@
 import base64
-from datetime import datetime
 from pathlib import Path
 
 import streamlit as st
 
-from evaluation.grader_runner import evaluate_task
 from runtime.inference_runner import run_episode
 from study_env.env import StudyPlannerEnv
 from study_env.tasks import TASKS
 
 
 APP_NAME = "EduDynamics"
-APP_VERSION = "1.1.1"
+APP_VERSION = "1.1.0"
 UI_LAYER_NAME = "AuraUI"
-UI_LAYER_VERSION = "1.1.1"
+UI_LAYER_VERSION = "1.1.0"
 LOGO_PATH = str(Path(__file__).resolve().parent / "assets" / "edudynamics-logo.svg")
 SUBJECT_COLORS = {
     "math": "#64d2ff",
@@ -227,54 +225,6 @@ def inject_styles(appearance="dark"):
             border-radius: 8px;
             padding: 0.08rem 0.4rem;
         }
-        .review-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.45rem;
-            padding: 0.38rem 0.82rem;
-            border-radius: 999px;
-            font-size: 0.8rem;
-            font-weight: 800;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            border: 1px solid transparent;
-            margin-bottom: 0.7rem;
-        }
-        .review-badge.excellent {
-            background: rgba(20, 184, 116, 0.16);
-            color: #0e8f5b;
-            border-color: rgba(20, 184, 116, 0.22);
-        }
-        .review-badge.on-target {
-            background: rgba(14, 165, 233, 0.16);
-            color: #0c7fb0;
-            border-color: rgba(14, 165, 233, 0.22);
-        }
-        .review-badge.borderline {
-            background: rgba(245, 158, 11, 0.16);
-            color: #b46808;
-            border-color: rgba(245, 158, 11, 0.22);
-        }
-        .review-badge.needs-attention {
-            background: rgba(239, 68, 68, 0.14);
-            color: #c43d3d;
-            border-color: rgba(239, 68, 68, 0.2);
-        }
-        .review-history {
-            display: grid;
-            gap: 0.8rem;
-        }
-        .review-history-item {
-            border: 1px solid var(--glass-border);
-            background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(246,250,255,0.72));
-            border-radius: 20px;
-            padding: 0.95rem 1rem;
-            box-shadow: 0 12px 26px rgba(8, 15, 28, 0.08);
-        }
-        .review-history-meta {
-            color: var(--text-faint);
-            font-size: 0.8rem;
-            margin-top: 0.45rem;
         }
         .stTabs [data-baseweb="tab-list"] {
             gap: 0.65rem;
@@ -473,54 +423,6 @@ def inject_styles(appearance="dark"):
             color: var(--text-soft);
             box-shadow: 0 16px 34px rgba(8, 15, 28, 0.24);
         }
-        .review-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.45rem;
-            padding: 0.38rem 0.82rem;
-            border-radius: 999px;
-            font-size: 0.8rem;
-            font-weight: 800;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            border: 1px solid transparent;
-            margin-bottom: 0.7rem;
-        }
-        .review-badge.excellent {
-            background: rgba(52, 211, 153, 0.18);
-            color: #b8ffe2;
-            border-color: rgba(52, 211, 153, 0.26);
-        }
-        .review-badge.on-target {
-            background: rgba(56, 189, 248, 0.18);
-            color: #c8f2ff;
-            border-color: rgba(56, 189, 248, 0.26);
-        }
-        .review-badge.borderline {
-            background: rgba(251, 191, 36, 0.18);
-            color: #ffe8ad;
-            border-color: rgba(251, 191, 36, 0.24);
-        }
-        .review-badge.needs-attention {
-            background: rgba(248, 113, 113, 0.18);
-            color: #ffd4d4;
-            border-color: rgba(248, 113, 113, 0.24);
-        }
-        .review-history {
-            display: grid;
-            gap: 0.8rem;
-        }
-        .review-history-item {
-            border: 1px solid var(--glass-border);
-            background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));
-            border-radius: 20px;
-            padding: 0.95rem 1rem;
-            box-shadow: 0 14px 30px rgba(8, 15, 28, 0.18);
-        }
-        .review-history-meta {
-            color: var(--text-faint);
-            font-size: 0.8rem;
-            margin-top: 0.45rem;
         }
         .stTabs [data-baseweb="tab-list"] {
             gap: 0.65rem;
@@ -609,68 +511,6 @@ def safe_has_openai_key():
     except Exception:
         pass
     return bool(st.session_state.get("has_openai_key") or st.session_state.get("openai_key_hint"))
-
-
-def _aggregate_reward_components(trace):
-    totals = {}
-    for item in trace:
-        for component, value in item.get("reward_breakdown", {}).items():
-            totals[component] = totals.get(component, 0.0) + value
-    return {key: round(value, 4) for key, value in totals.items()}
-
-
-def build_run_review(summary):
-    evaluation = evaluate_task(summary["task"], summary)
-    metrics = evaluation["metrics"]
-    thresholds = evaluation["thresholds"]
-    reward_ratio = metrics["total_reward"] / max(thresholds["min_reward"], 0.0001)
-    reward_delta = round(metrics["total_reward"] - thresholds["min_reward"], 4)
-    components = _aggregate_reward_components(summary["trace"])
-    best_component = max(components.items(), key=lambda item: item[1], default=("none", 0.0))
-    biggest_drag = min(components.items(), key=lambda item: item[1], default=("none", 0.0))
-
-    if reward_ratio >= 1.15:
-        verdict = "Excellent"
-        tone = "This run is beating the reward target comfortably."
-    elif reward_ratio >= 1.0:
-        verdict = "On target"
-        tone = "This run clears the reward target and is in a healthy range."
-    elif reward_ratio >= 0.8:
-        verdict = "Borderline"
-        tone = "This run is close, but the reward leaves room for a tighter study plan."
-    else:
-        verdict = "Needs attention"
-        tone = "This run is under the reward target and needs a better pacing strategy."
-
-    feedback = []
-    if reward_delta >= 0:
-        feedback.append(f"Reward finished {reward_delta:.2f} above the {summary['task']} target.")
-    else:
-        feedback.append(f"Reward finished {abs(reward_delta):.2f} below the {summary['task']} target.")
-
-    if not evaluation["checks"]["mastery_ok"]:
-        feedback.append("Mastery is still lagging, so bias the next run toward weaker subjects before spending actions on maintenance.")
-    if not evaluation["checks"]["balance_ok"]:
-        feedback.append("Subject balance drifted too far, so rotate earlier into the neglected subject to protect the composite reward.")
-    if metrics["energy_left"] <= 0.2:
-        feedback.append("Energy ended low, which usually means the run needs an earlier rest or revision pivot instead of one more intensive study block.")
-    if biggest_drag[1] < 0:
-        feedback.append(f"The largest reward drag was `{biggest_drag[0]}` at {biggest_drag[1]:.2f}, so that is the first place to tighten the policy.")
-    if best_component[1] > 0:
-        feedback.append(f"The strongest contributor was `{best_component[0]}` at +{best_component[1]:.2f}; keep that pattern in the next run.")
-    if len(feedback) < 3:
-        feedback.append("The reward profile is stable enough to reuse this sequence as a baseline and compare future stochastic runs against it.")
-
-    return {
-        "verdict": verdict,
-        "badge_class": verdict.lower().replace(" ", "-"),
-        "tone": tone,
-        "score": evaluation["score"],
-        "reward_target": thresholds["min_reward"],
-        "reward_delta": reward_delta,
-        "feedback": " ".join(feedback[:4]),
-        "components": components,
-    }
 
 
 def render_logo(width_px, framed=False):
@@ -811,48 +651,6 @@ def render_plan_snapshot(summary):
             """,
             unsafe_allow_html=True,
         )
-
-
-def render_run_review(summary):
-    review = build_run_review(summary)
-    history_rows = st.session_state.get("run_history", [])
-
-    left, right = st.columns([1.15, 1.0])
-    with left:
-        st.markdown("### Run Review")
-        st.markdown(
-            f"""
-            <div class="panel">
-                <div class="review-badge {review["badge_class"]}">{review["verdict"]}</div>
-                <div class="big-number">{summary["total_reward"]:.2f}</div>
-                <div class="support-text">
-                    {review["tone"]}<br><br>
-                    Review score: <strong>{review["score"]:.2f}</strong><br>
-                    Reward target: <strong>{review["reward_target"]:.2f}</strong><br>
-                    Feedback: {review["feedback"]}
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with right:
-        st.markdown("### Recent Reviews")
-        if history_rows:
-            history_markup = "".join(
-                f"""
-                <div class="review-history-item">
-                    <div class="review-badge {item["badge_class"]}">{item["review"]}</div>
-                    <div><strong>{item["task"].title()}</strong> · reward <strong>{item["reward"]:.2f}</strong></div>
-                    <div class="support-text">{item["feedback"]}</div>
-                    <div class="review-history-meta">{item["time"]} · {item["mode"]} · seed {item["seed"]}</div>
-                </div>
-                """
-                for item in history_rows[:6]
-            )
-            st.markdown(f'<div class="review-history">{history_markup}</div>', unsafe_allow_html=True)
-        else:
-            st.info("Run a simulation to start collecting reward-based reviews.")
 
 
 def render_analytics(summary):
@@ -1066,31 +864,12 @@ def main():
         st.session_state.summary = None
     if "manual_config" not in st.session_state:
         st.session_state.manual_config = None
-    if "run_history" not in st.session_state:
-        st.session_state.run_history = []
 
     stochastic = mode in {"stochastic", "randomize"}
     actual_seed = None if mode == "randomize" else int(seed)
 
     if run_clicked:
-        summary = run_episode_cached(task_name, stochastic=stochastic, seed=actual_seed, agent_mode="heuristic")
-        review = build_run_review(summary)
-        mode_label = "randomized" if actual_seed is None else ("stochastic" if stochastic else "deterministic")
-        st.session_state.summary = summary
-        st.session_state.run_history.insert(
-            0,
-            {
-                "time": datetime.now().strftime("%H:%M:%S"),
-                "task": task_name,
-                "mode": mode_label,
-                "seed": "auto" if actual_seed is None else actual_seed,
-                "reward": round(summary["total_reward"], 4),
-                "review": review["verdict"],
-                "badge_class": review["badge_class"],
-                "feedback": review["feedback"],
-            },
-        )
-        st.session_state.run_history = st.session_state.run_history[:20]
+        st.session_state.summary = run_episode_cached(task_name, stochastic=stochastic, seed=actual_seed, agent_mode="heuristic")
 
     summary = st.session_state.summary
     if summary is None:
@@ -1102,8 +881,6 @@ def main():
     render_subject_cards(summary)
     st.markdown("")
     render_plan_snapshot(summary)
-    st.markdown("")
-    render_run_review(summary)
 
     overview_tab, manual_tab, compare_tab = st.tabs(["Overview", "Manual Lab", "Compare"])
     with overview_tab:
