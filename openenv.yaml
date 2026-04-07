@@ -23,6 +23,7 @@ grader:
   function: grade
 environment_variables:
   - API_BASE_URL
+  - API_KEY
   - MODEL_NAME
   - OPENAI_API_KEY
   - HF_TOKEN

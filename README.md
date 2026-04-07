@@ -44,7 +44,7 @@ This repo is structured to satisfy the common first-round validator checks:
 - three tasks and a normalized grader score in the `0.0` to `1.0` range
 - Dockerfile build path for automated repo validation
 - pre-submission validation script via `python validate_submission.py`
-- environment variable placeholders for `API_BASE_URL`, `MODEL_NAME`, and `HF_TOKEN`
+- environment variable placeholders for `API_BASE_URL`, `MODEL_NAME`, `API_KEY`, and `HF_TOKEN`
 - OpenAI baseline support through `OPENAI_API_KEY`
 - OpenEnv packaging pieces including `pyproject.toml`, `uv.lock`, and `server/app.py`
 
@@ -302,6 +302,7 @@ For validator-style API checks, the deployment also exposes:
 The project includes `.env.example` with the required names:
 
 - `API_BASE_URL`
+- `API_KEY`
 - `MODEL_NAME`
 - `OPENAI_API_KEY`
 - `HF_TOKEN`

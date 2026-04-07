@@ -9,6 +9,7 @@ from study_env import StudyPlannerEnv
 from study_env.tasks import TASKS
 API_BASE_URL = os.getenv("API_BASE_URL", "https://api.openai.com/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "gpt-4.1-mini")
+API_KEY = os.getenv("API_KEY", "")
 HF_TOKEN = os.getenv("HF_TOKEN", "")
 LOCAL_IMAGE_NAME = os.getenv("LOCAL_IMAGE_NAME", "")
 BENCHMARK_NAME = "edudynamics"
@@ -59,10 +60,10 @@ class DeterministicPlannerAgent:
 class OpenAIBaselineAgent:
     def __init__(self, model_name=None, api_key=None, api_base_url=None):
         self.model_name = model_name or MODEL_NAME
-        self.api_key = api_key or os.getenv("OPENAI_API_KEY") or HF_TOKEN
+        self.api_key = api_key or API_KEY or os.getenv("OPENAI_API_KEY") or HF_TOKEN
         self.api_base_url = api_base_url or API_BASE_URL
         if not self.api_key:
-            raise ValueError("HF_TOKEN or OPENAI_API_KEY is required for OpenAIBaselineAgent.")
+            raise ValueError("API_KEY, HF_TOKEN, or OPENAI_API_KEY is required for OpenAIBaselineAgent.")
         client_kwargs = {"api_key": self.api_key}
         if self.api_base_url:
             client_kwargs["base_url"] = self.api_base_url
@@ -282,7 +283,7 @@ def main():
     stochastic = args.stochastic or args.randomize
     seed = random.SystemRandom().randint(0, 10**9) if args.randomize else args.seed
     if args.agent == "auto":
-        agent_mode = "openai" if os.getenv("OPENAI_API_KEY") else "heuristic"
+        agent_mode = "openai" if (API_KEY or os.getenv("OPENAI_API_KEY")) else "heuristic"
     else:
         agent_mode = args.agent
 
