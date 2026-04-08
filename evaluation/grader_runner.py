@@ -1,3 +1,5 @@
+import math
+
 from runtime.inference_runner import run_episode
 from study_env.tasks import TASKS
 
@@ -10,7 +12,15 @@ TASK_THRESHOLDS = {
 
 
 def _clip(value, eps=0.01):
-    return max(eps, min(1.0 - eps, round(value, 4)))
+    if not math.isfinite(value):
+        return 0.5
+    value = max(eps, min(1.0 - eps, value))
+    value = round(value, 2)
+    if value <= 0.0:
+        return eps
+    if value >= 1.0:
+        return 1.0 - eps
+    return value
 
 
 def evaluate_task(task_name, summary):
@@ -29,10 +39,6 @@ def evaluate_task(task_name, summary):
         "deadline_ready_ok": episode.get("deadline_readiness", 0.0) >= thresholds["min_deadline_readiness"],
     }
     score = _clip((reward_score + mastery_score + balance_score + readiness_score) / 4.0)
-    if score <= 0.0:
-        score = 0.01
-    elif score >= 1.0:
-        score = 0.99
 
     return {
         "task": task_name,
@@ -64,10 +70,6 @@ def grade():
         passed_tasks += int(evaluation["passed"])
 
     overall_score = _clip(aggregate_score / len(TASKS))
-    if overall_score <= 0.0:
-        overall_score = 0.01
-    elif overall_score >= 1.0:
-        overall_score = 0.99
     overall_status = "pass" if passed_tasks == len(TASKS) else "partial"
 
     return {
